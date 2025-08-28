@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control Remoto</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    button {
+      width: 80%;
+      padding: 20px;
+      margin: 10px;
+      font-size: 24px;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+    }
+    .rojo { background: #e74c3c; }
+    .verde { background: #27ae60; }
+    .azul { background: #2980b9; }
+  </style>
+</head>
+<body>
+  <h1>Control Remoto</h1>
+  <button class="rojo" onclick="enviar('rojo')">Rojo</button>
+  <button class="verde" onclick="enviar('verde')">Verde</button>
+  <button class="azul" onclick="enviar('azul')">Azul</button>
+
+  <script>
+    const socket = io();
+
+    function enviar(color) {
+      socket.emit('message', color);
+      console.log("Enviado:", color);
+    }
+  </script>
+</body>
+</html>

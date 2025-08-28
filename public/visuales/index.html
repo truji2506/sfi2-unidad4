@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Visuales</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body style="margin:0; background:black;">
+  <canvas id="canvas"></canvas>
+  
+  <script>
+    const socket = io();
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    socket.on('touchData', (data) => {
+      if(data.type === 'start' || data.type === 'move'){
+        ctx.fillStyle = 'rgba(0,200,255,0.5)';
+        ctx.beginPath();
+        ctx.arc(data.x, data.y, 30, 0, Math.PI*2);
+        ctx.fill();
+      }
+    });
+  </script>
+</body>
+</html>
