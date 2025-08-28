@@ -10,7 +10,7 @@ function setup() {
   socket = io();
 
   textAlign(CENTER, CENTER);
-  textSize(18);
+  textSize(20);
 }
 
 function draw() {
