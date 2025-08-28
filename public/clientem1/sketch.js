@@ -1,48 +1,41 @@
-// Conexión con el servidor usando Socket.IO
-const socket = io();
+// clientem1/sketch.js
+
+// Variable para nuestro socket
+let socket;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  background(200);
+    createCanvas(windowWidth, windowHeight);
+    background(0); // Fondo negro para el cliente móvil
 
-  // Conectar con el servidor
-  socket = io();
+    // Conectamos al servidor.
+    // Asegúrate de que la dirección coincida con tu servidor.
+    // Si lo corres localmente, esto debería funcionar.
+    socket = io.connect('http://localhost:3000'); // Asumiendo que tu server corre en el puerto 3000
 
-  // Texto inicial en la pantalla
-  textAlign(CENTER, CENTER);
-  textSize(20);
-  fill(50);
-  text("Toca la pantalla para enviar datos", width / 2, height / 2);
+    // Opcional: un feedback visual en el móvil
+    fill(255);
+    textSize(24);
+    textAlign(CENTER, CENTER);
+    text('Toca la pantalla', width / 2, height / 2);
 }
 
-function draw() {
-  // Aquí no es necesario redibujar nada continuo todavía
-}
-
+// Esta función se ejecuta cada vez que el usuario toca la pantalla
 function touchStarted() {
-  sendTouch(mouseX, mouseY, "start");
-  return false; // evita scroll en móviles
-}
-
-function touchMoved() {
-  sendTouch(mouseX, mouseY, "move");
-  return false;
-}
-
-function touchEnded() {
-  sendTouch(mouseX, mouseY, "end");
-  return false;
-}
-
-function sendTouch(x, y, state) {
-  if (socket) {
+    // Creamos un objeto con los datos que queremos enviar.
+    // Enviamos las coordenadas normalizadas (entre 0 y 1)
+    // para que no dependan del tamaño de la pantalla del móvil.
     const data = {
-      x: x,
-      y: y,
-      state: state, // "start", "move" o "end"
-      timestamp: Date.now()
+        x: mouseX / width,
+        y: mouseY / height,
+        id: socket.id // Enviamos la ID del socket para saber qué usuario fue
     };
-    socket.emit("touchData", data);
-    console.log("Touch enviado:", data);
-  }
+
+    // Emitimos los datos al servidor con el nombre de evento 'mobileTouch'
+    socket.emit('mobileTouch', data);
+
+    // Damos un feedback visual instantáneo en la pantalla del móvil
+    fill(255, 204, 0); // Un toque dorado
+    ellipse(mouseX, mouseY, 50, 50);
+
+    return false; // Prevenir comportamiento táctil por defecto del navegador
 }
