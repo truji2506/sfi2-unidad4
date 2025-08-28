@@ -1,5 +1,7 @@
 # Pasos para realizar los experimentos
 
+Esto es nuevo
+
 ## Servidor
 
 Este proyecto implementa un servidor web al que añade funcionalidades de Websocket usando socket.io. 
